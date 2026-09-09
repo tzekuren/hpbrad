@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С Днем Рождения, Аделин!</title>
+    <!-- Подключаем каллиграфические шрифты -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&family=Montserrat:wght@300;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --slytherin-green: #0a2e1a;
+            --slytherin-bright: #2e7d32;
+            --slytherin-silver: #c0c0c0;
+            --calligraphy-font: 'Great Vibes', cursive;
+            --header-font: 'Cinzel Decorative', cursive;
+        }
+
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: #050505;
+            color: white;
+        }
+
+        /* --- СЦЕНА 1: ТОРТ --- */
+        #cake-stage {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background: radial-gradient(circle, #1a472a 0%, #050505 100%);
+            transition: all 1.5s ease-in-out;
+            cursor: pointer;
+        }
+
+        .cake-container {
+            position: relative;
+            width: 300px;
+            transition: transform 0.5s;
+        }
+
+        .cake-img {
+            width: 100%;
+            filter: drop-shadow(0 0 20px rgba(46, 125, 50, 0.4));
+        }
+
+        /* Магические свечи поверх картинки */
+        .candles-overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+        }
+
+        .flame {
+            position: absolute;
+            width: 12px; height: 18px;
+            background: radial-gradient(circle, #fffad1 0%, #ffd700 40%, transparent 100%);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            box-shadow: 0 0 15px #ffd700;
+            animation: flicker 0.15s infinite alternate;
+        }
+
+        @keyframes flicker {
+            0% { transform: scale(1) rotate(-2deg); opacity: 0.8; }
+            100% { transform: scale(1.1) rotate(2deg); opacity: 1; }
+        }
+
+        /* --- СЦЕНА 2: ВНУТРИ МЕШКА --- */
+        #bag-stage {
+            display: none;
+            height: 100vh;
+            width: 100%;
+            /* Эффект стенок мешка */
+            background: 
+                radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.8) 100%),
+                repeating-linear-gradient(45deg, #0a2e1a 0px, #0a2e1a 2px, #082615 2px, #082615 4px);
+            position: relative;
+            overflow: hidden;
+            border: 20px solid #0a2e1a;
+            box-sizing: border-box;
+        }
+
+        /* Свет сверху мешка */
+        #bag-stage::before {
+            content: '';
+            position: absolute;
+            top: -100px; left: 50%;
+            transform: translateX(-50%);
+            width: 200%; height: 400px;
+            background: radial-gradient(circle, rgba(46, 125, 50, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .instruction-text {
+            font-family: var(--header-font);
+            font-size: 1.5rem;
+            color: var(--slytherin-silver);
+            text-align: center;
+            margin-top: 40px;
+            text-shadow: 0 0 10px black;
+        }
+
+        .gift {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5));
+        }
+
+        .gift:hover {
+            transform: scale(1.1) rotate(3deg);
+            filter: drop-shadow(0 0 20px var(--slytherin-bright));
+        }
+
+        /* --- МОДАЛЬНОЕ ОКНО --- */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            background: url('https://www.transparenttextures.com/patterns/dark-leather.png'), #121212;
+            border: 2px solid var(--slytherin-silver);
+            padding: 40px;
+            z-index: 100;
+            border-radius: 5px;
+            width: 80%;
+            max-width: 500px;
+            box-shadow: 0 0 100px rgba(0,0,0,0.9);
+            text-align: center;
+        }
+
+        .greeting-text {
+            font-family: var(--calligraphy-font);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            color: #e0e0e0;
+            margin-bottom: 20px;
+        }
+
+        .signature {
+            font-family: var(--header-font);
+            color: var(--slytherin-bright);
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+        }
+
+        #counter {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: var(--header-font);
+            color: var(--slytherin-silver);
+            background: rgba(0,0,0,0.6);
+            padding: 5px 20px;
+            border-radius: 20px;
+            border: 1px solid var(--slytherin-bright);
+        }
+
+        .opened {
+            filter: grayscale(1) opacity(0.5) !important;
+            transform: scale(0.9) !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- СЦЕНА 1: ТОРТ -->
+    <div id="cake-stage" onclick="blowOut()">
+        <h2 class="mb-10 text-center font-light tracking-widest text-gray-400" style="font-family: var(--header-font);">
+            Аделин, загадай желание...
+        </h2>
+        <div class="cake-container">
+            <!-- ВСТАВЬ ССЫЛКУ НА ТОРТ НИЖЕ -->
+            <img src="" class="cake-img" alt="Торт">
+            
+            <div class="candles-overlay" id="candles">
+                <!-- Свечи (можно подвигать через top/left) -->
+                <div class="flame" style="top: 15%; left: 30%;"></div>
+                <div class="flame" style="top: 10%; left: 50%;"></div>
+                <div class="flame" style="top: 15%; left: 70%;"></div>
+                <div class="flame" style="top: 40%; left: 20%;"></div>
+                <div class="flame" style="top: 40%; left: 80%;"></div>
+            </div>
+        </div>
+        <p class="mt-10 animate-pulse text-xs uppercase tracking-widest text-green-700">Нажми, чтобы задуть свечи</p>
+    </div>
+
+    <!-- СЦЕНА 2: ВНУТРИ МЕШКА -->
+    <div id="bag-stage">
+        <p class="instruction-text">Ты заглянула в мешок с подарками... <br><span class="text-sm opacity-50">Нажимай на них, чтобы прочесть письма</span></p>
+        
+        <!-- ПОДАРКИ (ВСТАВЬ СВОИ ССЫЛКИ НА КАРТИНКИ) -->
+        <img src="" class="gift" style="width:120px; bottom:15%; left:10%" onclick="openGift(0, this)">
+        <img src="" class="gift" style="width:140px; bottom:20%; right:15%" onclick="openGift(1, this)">
+        <img src="" class="gift" style="width:110px; top:40%; left:20%" onclick="openGift(2, this)">
+        <img src="" class="gift" style="width:130px; top:45%; right:25%" onclick="openGift(3, this)">
+        <img src="" class="gift" style="width:150px; bottom:40%; left:45%" onclick="openGift(4, this)">
+
+        <div id="counter">Писем найдено: <span id="count">0</span> / 5</div>
+    </div>
+
+    <!-- ОКНО ПОЗДРАВЛЕНИЯ -->
+    <div id="modal">
+        <div id="modal-text" class="greeting-text"></div>
+        <div id="modal-sign" class="signature"></div>
+        <button onclick="closeModal()" class="mt-8 border border-green-800 px-6 py-1 text-xs uppercase tracking-widest hover:bg-green-950 transition">Закрыть</button>
+    </div>
+
+    <script>
+        const greetings = [
+            { text: "Пусть твоя хитрость будет острее любого клинка, а верность друзей — крепче стен Хогвартса.", sign: "— Твоя Лекс" },
+            { text: "С днем рождения, Аделин! Желаю найти все тайны, которые ты ищешь, и создать свои собственные.", sign: "— Мейсон" },
+            { text: "Пусть каждый твой шаг ведет к величию, а каждый вечер будет полон магии и уюта.", sign: "— Нуада" },
+            { text: "Аделин, ты — истинная гордость змеиного факультета. Сияй ярче любого артефакта!", sign: "— Сэм" },
+            { text: "В этом мешке еще много сюрпризов, но самый главный подарок для нас — это ты.", sign: "— Твои близкие" }
+        ];
+
+        let found = 0;
+        const foundSet = new Set();
+
+        function blowOut() {
+            // Прячем свечи
+            document.getElementById('candles').style.display = 'none';
+            // Эффект перехода
+            document.getElementById('cake-stage').style.opacity = '0';
+            document.getElementById('cake-stage').style.transform = 'scale(1.1)';
+            
+            setTimeout(() => {
+                document.getElementById('cake-stage').style.display = 'none';
+                document.getElementById('bag-stage').style.display = 'block';
+            }, 1500);
+        }
+
+        function openGift(id, el) {
+            document.getElementById('modal-text').innerText = greetings[id].text;
+            document.getElementById('modal-sign').innerText = greetings[id].sign;
+            document.getElementById('modal').style.display = 'block';
+
+            if(!foundSet.has(id)) {
+                foundSet.add(id);
+                found++;
+                document.getElementById('count').innerText = found;
+                el.classList.add('opened');
+            }
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            if(found === 5) {
+                document.querySelector('.instruction-text').innerHTML = "Все письма прочитаны... <br>Пусть сбудутся все твои мечты!";
+            }
+        }
+    </script>
+</body>
+</html>
